@@ -1,2 +1,25 @@
 An account named "emre" has been created.
 Logged into "emre" account.
+03. DEPOSÝT
+35 dollars is deposited!
+Previous  Balance: 3500$ Current  Balance: 3535$
+04. DEBÝT
+450 dollars is withdrawed!
+Previous  Balance: 3535$ Current  Balance: 3085$
+07. MODIFY THE ACCOUNT
+The name "emre" turned into "Emre".
+07. MODIFY THE ACCOUNT
+The surname "þýk" turned into "Þýk".
+07. MODIFY THE ACCOUNT
+The phone number "05006006060" turned into "05007007070".
+07. MODIFY THE ACCOUNT
+The phone number "emre123" turned into "emre321".
+Successfully logged out of the "Emre" account.
+Logged into "Emre" account.
+06. DELETE THE ACCOUNT
+"Emre" account has been deleted.
+Logged into "Erdem" account.
+08. SEND MONEY TO OTHER ACCOUNTS
+300$ sent to Kadir
+Previous  Balance: 680.78$ Current  Balance: 380.78$
+Successfully logged out of the "Erdem" account.

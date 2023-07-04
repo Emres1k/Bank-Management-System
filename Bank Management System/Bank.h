@@ -120,7 +120,7 @@ void Account::loginOrCreateAccount(Account* accounts, Account* currentAccount) {
 				if (accounts[i]==0) {
 					accounts[i].createAccount(accounts, i);
 					accExceed = false;
-					if (accountReceipt)
+					if (accountReceipt && !(accounts[i] == 0)) 
 						receipt << "An account named \"" << accounts[i].accountName << "\" has been created." << endl;
 					loginOrCreateAccount(accounts, currentAccount);
 					return;
@@ -198,32 +198,36 @@ void Account::loginAccount(Account* accounts, Account* currentAccount) {
 void Account::createAccount(Account* accounts, int i) {
 	controlName();
 	if (accountName == "-1") {
+		setPerson();
 		cout << "Cancelled!" << endl;
 		return;
 	}
 	controlSurname();
 	if (accountSurname == "-1") {
+		setPerson();
 		cout << "Cancelled!" << endl;
 		return;
 	}
 	controlPhone(accounts);
 	if (accountPhone == "-1") {
+		setPerson();
 		cout << "Cancelled!" << endl;
 		return;
 	}
 	controlBalance();
 	if (accountBalance == -1) {
+		setPerson();
 		cout << "Cancelled!" << endl;
 		return;
 	}
 	controlPassword();
 	if (accountPassword == "-1") {
+		setPerson();
 		cout << "Cancelled!" << endl;
 		return;
 	}
 	cout << "\nYou have succesfully created your account" << endl;
 	cout << "Please login to see your account." << endl;
-	
 }
 void Account::displayProfile() {
 	string upperPersonName = accountName;
@@ -252,7 +256,7 @@ void Account::displayProfile() {
 void Account::logoutAccount(Account* currentAccount) {
 	cout << "You have succesfully logged out your current account!" << endl;
 	if (accountReceipt) {
-		receipt << "Successfully logged out of the " << currentAccount->accountName << " account." << endl;
+		receipt << "Successfully logged out of the \"" << currentAccount->accountName << "\" account." << endl;
 	}
 	currentAccount->setPerson();
 }
@@ -274,8 +278,8 @@ void Account::deposit(Account* accounts, Account* currentAccount) {
 	if (accountReceipt) {
 		receipt << "03. DEPOSÝT" << endl;
 		receipt << amount << " dollars is deposited!" << endl;
-		receipt << "Previous  Balance: " << oldBalance;
-		receipt << " Current  Balance: " << currentAccount->accountBalance << endl;
+		receipt << "Previous  Balance: " << oldBalance << "$";
+		receipt << " Current  Balance: " << currentAccount->accountBalance << "$" << endl;
 	}
 }
 void Account::withdraw(Account* accounts, Account* currentAccount) {
@@ -300,8 +304,8 @@ void Account::withdraw(Account* accounts, Account* currentAccount) {
 	if (accountReceipt) {
 		receipt << "04. DEBÝT" << endl;
 		receipt << amount << " dollars is withdrawed!" << endl;
-		receipt << "Previous  Balance: " << oldBalance;
-		receipt << " Current  Balance: " << currentAccount->accountBalance << endl;
+		receipt << "Previous  Balance: " << oldBalance << "$";
+		receipt << " Current  Balance: " << currentAccount->accountBalance << "$" << endl;
 	}
 }
 void Account::showOtherAccounts(Account* accounts, Account* currentAccount) {
@@ -325,6 +329,7 @@ void Account::showOtherAccounts(Account* accounts, Account* currentAccount) {
 }
 void Account::deleteAccount(Account* accounts, Account* currentAccount) {
 	int j;
+	string deletedName = currentAccount->accountName;
 	for (int i = 0; i < 10; i++) {
 		if (accounts[i] == *currentAccount) {
 			cout << "--------------------------------------" << endl;
@@ -339,25 +344,34 @@ void Account::deleteAccount(Account* accounts, Account* currentAccount) {
 	for (j; j < 9; j++) {
 		accounts[j] = accounts[j + 1];
 	}
-	if (accountReceipt)
-		receipt << currentAccount->accountName << " account has been deleted." << endl;
+	if (accountReceipt) {
+		receipt << "06. DELETE THE ACCOUNT" << endl;
+		receipt << "\"" << deletedName << "\" account has been deleted." << endl;
+	}
 	loginOrCreateAccount(accounts, currentAccount);
 }
 void Account::modifyAccount(Account* accounts, Account* currentAccount) {
 	int num, i;
 	string oldString, passwordCheck,option;
 	cout << "Which information would you like to change in your account?" << endl;
-	cout << "1.Name 2.Surname 3.Phone number 4.Password 5.Cancel" << endl;
+	cout << "1.Name 2.Surname 3.Phone number 4.Password" << endl;
 	while (true) {
 		cin >> option;
 		try {
 			num = stoi(option);
-			if (num >= 1 && num <= 5)
+			if (num >= 1 && num <= 4)
 				break;
+			if (num == -1) {
+				cout << "The process of changing the name has been canceled." << endl;
+				return;
+			}
 		}
 		catch (...) {
-			cout << "Invalid value. Please choose an option between 1-5" << endl;
+			cout << "Invalid value. Please choose an option between 1-4" << endl;
 		}
+	}
+	if (accountReceipt) {
+		receipt << "07. MODIFY THE ACCOUNT" << endl;
 	}
 	switch (num) {
 	case 1:
@@ -435,12 +449,6 @@ void Account::modifyAccount(Account* accounts, Account* currentAccount) {
 		if (accountReceipt)
 			receipt << "The phone number \"" << oldString << "\" turned into \"" << accountPassword << "\"." << endl;
 		break;
-	case 5:
-		cout << "Cancelled!" << endl;
-		break;
-	default:
-		cout << "Please choose an option betwwen 1-5" << endl;
-		break;
 	}
 	mergeObjects(accounts, currentAccount);
 	cout << "--------------------------------------" << endl;
@@ -501,9 +509,9 @@ void Account::sendMoney(Account* accounts, Account* currentAccount) {
 	mergeObjects(accounts, currentAccount);
 	if (accountReceipt) {
 		receipt << "08. SEND MONEY TO OTHER ACCOUNTS" << endl;
-		receipt << amount << " dollars sent to " << accounts[accountNo].accountName << endl;
-		receipt << "Previous  Balance: " << oldBalance;
-		receipt << " Current  Balance: " << currentAccount->accountBalance << endl;
+		receipt << amount << "$ sent to " << accounts[accountNo].accountName << endl;
+		receipt << "Previous  Balance: " << oldBalance << "$";
+		receipt << " Current  Balance: " << currentAccount->accountBalance << "$" << endl;
 	}
 }
 auto characterInquiry = [](string nameOrSurname) {
